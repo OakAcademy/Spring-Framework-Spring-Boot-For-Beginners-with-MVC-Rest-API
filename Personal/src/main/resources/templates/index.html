@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person List page</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="row">
+        <h1>Person List Page</h1>
+    </div>
+    <div class="row">
+        <a th:href="@{/addnewperson}" class="btn btn-primary"> New Person</a>
+    </div>
+    <div class="container">
+        <div class="row">
+
+            <table border="1" class="table table-striped table-responsive-md">
+                <thead>
+                <th>
+                    <a th:href="@{'/page/'+${currentpage}+'?sortfield=name&sortdirection='+${reversesortdirection}}">Name</a>
+                </th>
+                <th><a th:href="@{'/page/'+${currentpage}+'?sortfield=surname&sortdirection='+${reversesortdirection}}">Surname</a>
+                </th>
+                <th><a th:href="@{'/page/'+${currentpage}+'?sortfield=email&sortdirection='+${reversesortdirection}}">Email</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/'+${currentpage}+'?sortfield=job&sortdirection='+${reversesortdirection}}">Job</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/'+${currentpage}+'?sortfield=age&sortdirection='+${reversesortdirection}}">Age</a>
+                </th>
+
+                <th>process</th>
+                </thead>
+                <tbody>
+                <tr th:each="person:${persons}">
+                    <td th:text="${person.name}"></td>
+                    <td th:text="${person.surname}"></td>
+                    <td th:text="${person.email}"></td>
+                    <td th:text="${person.job}"></td>
+                    <td th:text="${person.age}"></td>
+                    <td>
+                        <a th:href="@{/updateperson/{id}(id=${person.id})}" class="btn btn-info">update</a>
+                        <a th:href="@{/deleteperson/{id}(id=${person.id})}" class="btn btn-danger">delete</a>
+
+                    </td>
+
+
+                </tr>
+                </tbody>
+
+
+            </table>
+            <div class="row">
+                <div th:if="${totalpages > 1}">
+                    <div class="row col-sm-12">
+                        <div class="col-sm-2">
+                            Total Rows: [[${totalelements}]]
+                        </div>
+                        <div class="col-sm-6">
+
+     <span th:each="i: ${#numbers.sequence(1, totalpages)}">
+      <a th:if="${currentpage != i}"
+         th:href="@{'/page/' + ${i}+ '?sortfield=' + ${sortfield} + '&sortdirection=' + ${sortdirection}}">[[${i}]]</a>
+      <span th:unless="${currentpage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+     </span>
+                        </div>
+                        <div class="col-sm-2">
+                            <a th:if="${currentpage < totalpages}"
+                               th:href="@{'/page/' + ${currentpage + 1}+ '?sortfield=' + ${sortfield} + '&sortdirection=' + ${sortdirection}}">Next</a>
+                            <span th:unless="${currentpage < totalpages}">Next</span>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <a th:if="${currentpage < totalpages}"
+                               th:href="@{'/page/' + ${totalpages}+ '?sortfield=' + ${sortfield} + '&sortdirection=' + ${sortdirection}}">Last</a>
+                            <span th:unless="${currentpage < totalpages}">Last</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>
